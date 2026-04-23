@@ -101,6 +101,16 @@
     z-index: 9999;
   }
 
+  #taskbar-buttons {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
   #start-btn {
     display: flex;
     align-items: center;
@@ -167,6 +177,8 @@
     align-items: center;
     gap: 6px;
     min-width: 108px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .taskbar-btn.active {
     border-top: 2px solid var(--win-darker);
@@ -174,6 +186,14 @@
     border-right: 2px solid var(--win-white);
     border-bottom: 2px solid var(--win-white);
     background: #b0b0b0;
+  }
+
+  .taskbar-btn-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    display: block;
+    flex-shrink: 0;
   }
 
   #start-menu {
@@ -1337,10 +1357,26 @@ const paintState = {
 };
 
 const taskbarIcons = {
-  welcome: '🖥️', about: '👤', skills: '🧠', projects: '📁', experience: '💼', contact: '✉️', paint: '🎨', minesweeper: '💣'
+  welcome: 'Icons/notepad-5.png',
+  about: 'Icons/computer_explorer_cool-5.png',
+  skills: 'Icons/users-0.png',
+  projects: 'Icons/directory_open_file_mydocs_2k-2.png',
+  experience: 'Icons/network_cool_two_pcs-0.png',
+  education: 'Icons/notepad-5.png',
+  contact: 'Icons/envelope_closed-0.png',
+  paint: 'Icons/paint_old-0.png',
+  minesweeper: 'Icons/minesweeper.png'
 };
 const taskbarTitles = {
-  welcome: 'Welcome!', about: 'About Me', skills: 'Skills', projects: 'Projects', experience: 'Experience', contact: 'Contact', paint: 'Paint', minesweeper: 'Minesweeper'
+  welcome: 'Welcome!',
+  about: 'About Me',
+  skills: 'Skills',
+  projects: 'Projects',
+  experience: 'Experience',
+  education: 'Education',
+  contact: 'Contact',
+  paint: 'Paint',
+  minesweeper: 'Minesweeper'
 };
 
 function toggleStart(force) {
@@ -1518,7 +1554,19 @@ function focusWindow(id) {
 function addTaskbarBtn(name) {
   const btn = document.createElement('div');
   btn.className = 'taskbar-btn active';
-  btn.innerHTML = taskbarIcons[name] + ' ' + taskbarTitles[name];
+  const iconSrc = taskbarIcons[name] || 'Icons/notepad-5.png';
+  const title = taskbarTitles[name] || name;
+
+  const icon = document.createElement('img');
+  icon.className = 'taskbar-btn-icon';
+  icon.src = iconSrc;
+  icon.alt = title + ' icon';
+
+  const label = document.createElement('span');
+  label.textContent = title;
+
+  btn.appendChild(icon);
+  btn.appendChild(label);
   btn.onclick = () => {
     const id = windows[name];
     const el = document.getElementById(id);
@@ -1971,16 +2019,34 @@ function checkWin() {
   }
 }
 
+function playStartupSound() {
+  const audio = document.getElementById('startup-sound');
+  if (!audio) return;
+  if (audio.dataset.played === '1') return;
+
+  audio.volume = 0.03;
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+
+  if (playPromise && typeof playPromise.then === 'function') {
+    playPromise.then(() => {
+      audio.dataset.played = '1';
+    }).catch(() => {
+      // Autoplay blocked by browser: wait for first interaction.
+    });
+  }
+}
+
 // Open welcome on load
 window.addEventListener('load', () => {
-  const audio = document.getElementById('startup-sound');
-  if (audio) {
-    audio.volume = 0.03;
-    audio.play().catch(() => {}); // Catch autoplay restrictions
-  }
+  playStartupSound();
   initDesktopIcons();
   openWindow('welcome');
   requestAnimationFrame(() => centerWindow('win-welcome'));
+});
+
+['pointerdown', 'keydown', 'touchstart'].forEach((evt) => {
+  document.addEventListener(evt, playStartupSound, { once: true });
 });
 
 function copyEmail() {
