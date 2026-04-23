@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio — BrunoOS 98</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  :root {
+    --win-bg: #008080;
+    --win-gray: #c0c0c0;
+    --win-dark: #808080;
+    --win-darker: #404040;
+    --win-white: #ffffff;
+    --win-black: #000000;
+    --win-blue: #000080;
+    --win-title-active: #000080;
+    --win-title-inactive: #808080;
+    --win-btn-face: #c0c0c0;
+    --win-highlight: #0000ff;
+    --win-shadow: #808080;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--win-bg);
+    font-family: 'MS Sans Serif', 'VT323', monospace;
+    height: 100vh;
+    overflow: hidden;
+    cursor: url('Icons/cursor79.cur'), default;
+    user-select: none;
+  }
+
+  /* Win98 pointer cursor */
+  .pointer {
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+
+  /* Desktop */
+  #desktop {
+    width: 100vw;
+    height: calc(100vh - 28px);
+    position: relative;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 120px);
+    grid-auto-rows: 132px;
+    gap: 8px;
+    align-content: start;
+  }
+
+  /* Desktop Icons */
+  .icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    padding: 6px;
+    border: 1px solid transparent;
+    width: 120px;
+  }
+  .icon:hover { border: 1px dotted white; background: rgba(255,255,255,0.1); }
+  .icon.selected { border: 1px dotted white; background: rgba(0,0,128,0.4); }
+
+  .icon img, .icon .icon-img {
+    width: 68px;
+    height: 68px;
+    image-rendering: pixelated;
+  }
+
+  .icon span {
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    text-shadow: 1px 1px 1px black;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  /* Pixel Icons as SVG */
+  .icon-img { display: block; }
+
+  /* Taskbar */
+  #taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    z-index: 9999;
+  }
+
+  #start-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3px 14px;
+    min-width: 98px;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: pointer;
+    height: 28px;
+  }
+  #start-btn img {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
+    display: block;
+  }
+  #start-btn:active {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+  }
+  #start-btn.open {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    background: #b0b0b0;
+  }
+
+  #clock {
+    margin-left: auto;
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    padding: 2px 8px;
+    font-size: 13px;
+    font-family: 'MS Sans Serif', monospace;
+    height: 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .taskbar-btn {
+    padding: 3px 14px;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    font-size: 13px;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 108px;
+  }
+  .taskbar-btn.active {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    background: #b0b0b0;
+  }
+
+  #start-menu {
+    position: fixed;
+    left: 0;
+    bottom: 28px;
+    width: 250px;
+    height: 300px;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    display: none;
+    z-index: 10000;
+    overflow: hidden;
+  }
+  #start-menu.visible { display: flex; }
+
+  .start-menu-rail {
+    width: 30px;
+    background: linear-gradient(180deg, #000080 0%, #0000a8 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 6px 0 6px 0;
+    font-family: 'MS Sans Serif', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+  }
+
+  .start-menu-rail > span {
+    display: block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin-bottom: 2px;
+    line-height: 1;
+  }
+
+  .start-menu-rail .rail-cap {
+    font-size: 1.14em;
+    font-weight: 700;
+  }
+
+  .start-menu-items {
+    flex: 1;
+    padding: 6px 4px 4px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .start-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    font-size: 13px;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+  .start-menu-item:hover {
+    background: var(--win-blue);
+    color: white;
+  }
+  .start-menu-item-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+    display: block;
+  }
+  .start-menu-separator {
+    height: 1px;
+    background: var(--win-dark);
+    margin: 3px 4px;
+    box-shadow: 0 1px 0 var(--win-white);
+  }
+
+  .paint-content {
+    padding: 0;
+    background: #c0c0c0;
+    display: flex;
+    flex-direction: column;
+  }
+  .paint-top-strip {
+    height: 26px;
+    border-bottom: 1px solid var(--win-darker);
+    background: #d6d6d6;
+  }
+  .paint-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .paint-workspace {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+  .paint-toolbox {
+    width: 52px;
+    padding: 4px;
+    border-right: 1px solid var(--win-darker);
+    background: #c0c0c0;
+    display: grid;
+    grid-template-columns: repeat(2, 20px);
+    grid-auto-rows: 20px;
+    gap: 2px;
+    align-content: start;
+  }
+  .paint-tool-btn {
+    width: 20px;
+    height: 20px;
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-darker);
+    border-bottom: 1px solid var(--win-darker);
+    background: #c0c0c0;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    font-size: 13px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'MS Sans Serif', monospace;
+    user-select: none;
+  }
+  .paint-tool-btn.active {
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+    background: #b0b0b0;
+  }
+  .paint-canvas-wrap {
+    flex: 1;
+    padding: 4px;
+    background: #c0c0c0;
+    min-width: 0;
+    min-height: 0;
+  }
+  #paint-canvas {
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    background: white;
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    cursor: crosshair;
+    display: block;
+  }
+  .paint-palette-bar {
+    height: 38px;
+    border-top: 1px solid var(--win-darker);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #c0c0c0;
+  }
+  .paint-current {
+    width: 28px;
+    height: 22px;
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+    background: #000000;
+  }
+  .paint-colors {
+    display: grid;
+    grid-template-columns: repeat(14, 14px);
+    gap: 2px;
+  }
+  .paint-color {
+    width: 14px;
+    height: 14px;
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-darker);
+    border-bottom: 1px solid var(--win-darker);
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+  .paint-color.active {
+    outline: 1px dotted #000;
+    outline-offset: -3px;
+  }
+
+  /* Minesweeper */
+  .mine-face {
+    width: 52px;
+    height: 52px;
+    image-rendering: pixelated;
+    display: block;
+    pointer-events: none;
+  }
+  .minesweeper-led {
+    background: #000;
+    color: #ff0000;
+    border: 2px inset #7a7a7a;
+    font-family: 'Press Start 2P', 'VT323', monospace;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 1px;
+    min-width: 56px;
+    text-align: center;
+    padding: 7px 4px 6px;
+  }
+  .minesweeper-cell {
+    width: 32px;
+    height: 32px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    user-select: none;
+    font-family: 'Press Start 2P', 'VT323', monospace;
+    line-height: 1;
+    color: #000;
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+  }
+  .minesweeper-cell:active {
+    border-color: #808080 #ffffff #ffffff #808080;
+  }
+  .minesweeper-cell.revealed {
+    border: 1px solid #808080;
+    background: #c0c0c0;
+  }
+  .minesweeper-cell.mine {
+    background: #c0c0c0;
+    font-size: 16px;
+  }
+  .minesweeper-cell.revealed.mine {
+    background: #ff0000;
+  }
+  .minesweeper-cell.flagged {
+    color: transparent;
+  }
+  .minesweeper-flag {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+    display: block;
+  }
+  .minesweeper-cell.empty {
+    color: transparent;
+  }
+
+  /* Windows */
+  .win-window {
+    position: absolute;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    min-width: 380px;
+    min-height: 240px;
+    display: none;
+    flex-direction: column;
+    z-index: 100;
+    resize: both;
+    overflow: hidden;
+  }
+  #win-paint {
+    position: fixed !important;
+  }
+  #win-minesweeper {
+    resize: none;
+  }
+  .win-window.visible { display: flex; }
+
+  .win-titlebar {
+    background: var(--win-title-active);
+    color: white;
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: move;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'MS Sans Serif', monospace;
+    flex-shrink: 0;
+  }
+  .win-window.inactive .win-titlebar { background: var(--win-title-inactive); }
+
+  .win-titlebar-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    display: block;
+  }
+
+  .win-title-text { flex: 1; }
+
+  .win-btn {
+    width: 16px;
+    height: 14px;
+    background: var(--win-gray);
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-darker);
+    border-bottom: 1px solid var(--win-darker);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    color: black;
+    font-weight: bold;
+  }
+  .win-btn:active {
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+  }
+
+  .win-menubar {
+    display: flex;
+    padding: 2px;
+    border-bottom: 1px solid var(--win-darker);
+    font-size: 13px;
+    font-family: 'MS Sans Serif', monospace;
+    flex-shrink: 0;
+  }
+  .win-menubar span {
+    padding: 2px 6px;
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+  .win-menubar span:hover { background: var(--win-blue); color: white; }
+
+  .win-content {
+    flex: 1;
+    overflow: auto;
+    padding: 12px;
+    background: white;
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    font-family: 'MS Sans Serif', Tahoma, monospace;
+    font-size: 15px;
+  }
+
+  .win-statusbar {
+    font-size: 12px;
+    font-family: 'MS Sans Serif', monospace;
+    padding: 2px 6px;
+    border-top: 1px solid var(--win-darker);
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+  }
+  .win-statusbar span {
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+    padding: 1px 8px;
+  }
+
+  /* Content Styles */
+  .content-section { margin-bottom: 16px; }
+  .content-section h2 {
+    font-family: 'MS Sans Serif', monospace;
+    font-size: 16px;
+    background: var(--win-blue);
+    color: white;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+  }
+  .content-section p { margin-bottom: 8px; line-height: 1.5; font-size: 14px; }
+
+  .project-card {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f0f0f0;
+  }
+  .project-card h3 { font-size: 15px; font-family: 'MS Sans Serif', monospace; margin-bottom: 4px; }
+  .project-card .tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+  .tag {
+    background: var(--win-blue);
+    color: white;
+    font-size: 11px;
+    padding: 1px 6px;
+    font-family: 'MS Sans Serif', monospace;
+  }
+  .project-link {
+    display: inline-block;
+    margin-top: 6px;
+    background: var(--win-gray);
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-darker);
+    border-bottom: 1px solid var(--win-darker);
+    padding: 2px 10px;
+    font-size: 13px;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    text-decoration: none;
+    color: black;
+  }
+
+  .skill-bar-row { margin-bottom: 6px; }
+  .skill-bar-label { font-size: 11px; font-family: 'MS Sans Serif', monospace; margin-bottom: 2px; }
+  .skill-bar-label { font-size: 13px; font-family: 'MS Sans Serif', monospace; margin-bottom: 2px; }
+  .skill-bar-outer {
+    height: 14px;
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+    background: white;
+    position: relative;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--win-blue) 0px,
+      var(--win-blue) 12px,
+      #1111aa 12px,
+      #1111aa 14px
+    );
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .about-info-block {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    padding: 8px;
+    background: #f0f0f0;
+  }
+  .about-info-block label {
+    font-size: 12px;
+    color: var(--win-darker);
+    display: block;
+    font-family: 'MS Sans Serif', monospace;
+  }
+  .about-info-block span { font-size: 14px; font-family: 'MS Sans Serif', monospace; }
+
+  .contact-field { margin-bottom: 10px; }
+  .contact-field label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+    font-family: 'MS Sans Serif', monospace;
+  }
+  .contact-field input, .contact-field textarea {
+    width: 100%;
+    font-family: 'MS Sans Serif', monospace;
+    font-size: 14px;
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+    padding: 4px 6px;
+    background: white;
+    outline: none;
+    resize: vertical;
+  }
+  .contact-submit {
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    padding: 4px 20px;
+    font-size: 14px;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: url('Icons/cursor107.cur'), pointer;
+    margin-top: 4px;
+  }
+  .contact-submit:active {
+    border-top: 2px solid var(--win-darker);
+    border-left: 2px solid var(--win-darker);
+    border-right: 2px solid var(--win-white);
+    border-bottom: 2px solid var(--win-white);
+  }
+
+  .welcome-hero {
+    padding: 20px;
+    border: 2px dashed var(--win-dark);
+    background: #f0f0f0;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .welcome-text {
+    flex: 1;
+    text-align: center;
+  }
+  .welcome-hero h1 { font-size: 32px; font-family: 'VT323', monospace; color: var(--win-blue); }
+  .welcome-hero p { font-size: 18px; margin-top: 6px; }
+  .welcome-hero .project-link {
+    font-size: 14px;
+    padding: 4px 12px;
+  }
+  .welcome-photo {
+    width: 165px;
+    padding: 8px 8px 20px 8px;
+    background: white;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    transform: rotate(3deg);
+    image-rendering: pixelated;
+    flex-shrink: 0;
+  }
+  .welcome-hero + div {
+    font-size: 14px;
+  }
+  .blink { animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Error dialog */
+  .error-dialog {
+    position: fixed;
+    background: var(--win-gray);
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
+    z-index: 9998;
+    display: none;
+    width: 320px;
+  }
+  .error-dialog.visible { display: block; }
+  .error-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    font-size: 14px;
+    font-family: 'MS Sans Serif', monospace;
+  }
+  .error-icon { font-size: 32px; flex-shrink: 0; }
+  .error-btns { display: flex; justify-content: center; padding: 8px; gap: 8px; }
+
+  .shutdown-body {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px 8px 14px;
+    font-size: 14px;
+    font-family: 'MS Sans Serif', monospace;
+  }
+  .shutdown-icon {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .shutdown-main {
+    flex: 1;
+  }
+  .shutdown-main p {
+    margin-bottom: 8px;
+  }
+  .shutdown-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .shutdown-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+  .shutdown-btns {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 10px 10px 10px;
+  }
+  .shutdown-btn {
+    min-width: 76px;
+    padding: 4px 12px;
+    background: var(--win-gray);
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-darker);
+    border-bottom: 1px solid var(--win-darker);
+    font-size: 14px;
+    font-family: 'MS Sans Serif', monospace;
+    cursor: url('Icons/cursor107.cur'), pointer;
+  }
+  .shutdown-btn:active {
+    border-top: 1px solid var(--win-darker);
+    border-left: 1px solid var(--win-darker);
+    border-right: 1px solid var(--win-white);
+    border-bottom: 1px solid var(--win-white);
+  }
+  .connect-row {
+  cursor: url('Icons/cursor107.cur'), pointer;
+  padding: 6px;
+  border: 1px solid transparent;
+}
+.connect-row:hover {
+  border: 1px dotted #000080;
+  background: #e0e0e0;
+}
+</style>
+<audio id="startup-sound" preload="auto">
+  <source src="Icons/Windows 98 Startup.mp3" type="audio/mpeg">
+</audio>
+</head>
+<body>
+
+<div id="desktop">
+  <!-- Icons -->
+  <div class="icon" id="icon-about" ondblclick="openWindow('about')" onclick="selectIcon('icon-about')">
+    <img class="icon-img" src="Icons/computer_explorer_cool-5.png" alt="About Me icon">
+    <span>About Me</span>
+  </div>
+
+  <div class="icon" id="icon-skills" ondblclick="openWindow('skills')" onclick="selectIcon('icon-skills')">
+    <img class="icon-img" src="Icons/users-0.png" alt="Skills icon">
+    <span>Skills & Languages</span>
+  </div>
+
+  <div class="icon" id="icon-projects" ondblclick="openWindow('projects')" onclick="selectIcon('icon-projects')">
+    <img class="icon-img" src="Icons/directory_open_file_mydocs_2k-2.png" alt="Projects icon">
+    <span>Projects</span>
+  </div>
+
+  <div class="icon" id="icon-experience" ondblclick="openWindow('experience')" onclick="selectIcon('icon-experience')">
+    <img class="icon-img" src="Icons/network_cool_two_pcs-0.png" alt="Experience icon">
+    <span>Experience</span>
+  </div>
+
+  <div class="icon" id="icon-contact" ondblclick="openWindow('contact')" onclick="selectIcon('icon-contact')">
+    <img class="icon-img" src="Icons/envelope_closed-0.png" alt="Contact icon">
+    <span>Contact Me</span>
+  </div>
+
+  <div class="icon" id="icon-welcome" ondblclick="openWindow('welcome')" onclick="selectIcon('icon-welcome')">
+    <img class="icon-img" src="Icons/notepad-5.png" alt="Welcome icon">
+    <span>Welcome!</span>
+  </div>
+
+  <div class="icon" id="icon-recycle" ondblclick="showError()" onclick="selectIcon('icon-recycle')">
+    <img class="icon-img" src="Icons/recycle_bin_empty_cool-5.png" alt="Recycle Bin icon">
+    <span>Recycle Bin</span>
+  </div>
+
+  <div class="icon" id="icon-paint" ondblclick="openWindow('paint')" onclick="selectIcon('icon-paint')">
+    <img class="icon-img" src="Icons/paint_old-0.png" alt="Paint icon">
+    <span>Paint</span>
+  </div>
+
+  <div class="icon" id="icon-minesweeper" ondblclick="openWindow('minesweeper')" onclick="selectIcon('icon-minesweeper')">
+    <img class="icon-img" src="Icons/minesweeper.png" alt="Minesweeper icon">
+    <span>Minesweeper</span>
+  </div>
+
+<!-- Windows -->
+
+<!-- Welcome Window -->
+<div class="win-window" id="win-welcome" style="width:700px;height:480px;top:60px;left:100px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-welcome')">
+    <img class="win-titlebar-icon" src="Icons/notepad-5.png" alt="Welcome icon">
+    <span class="win-title-text">Welcome to My Portfolio !</span>
+    <div class="win-btn" onclick="minimizeWindow('win-welcome')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-welcome','welcome')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="welcome-hero">
+      <div class="welcome-text">
+        <h1>Hello, World!</h1>
+        <h1 style="font-size:38px;">I'm Bruno !<span class="blink">_</span></h1>
+        <p style="margin-top:12px; font-size:18px;">Business IT Graduate</p>
+        <p style="margin-top:8px;color:#808080; font-size:18px;">Exploring systems, data, and digital solutions.</p>
+      </div>
+      <img class="welcome-photo" src="Icons/PixelatedFace.png" alt="Bruno portrait">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+      <button class="project-link" onclick="openWindow('about')">📋 About Me</button>
+      <button class="project-link" onclick="openWindow('projects')">📁 Projects</button>
+      <button class="project-link" onclick="openWindow('experience')">💼 Experience</button>
+      <button class="project-link" onclick="openWindow('education')">🎓 Education</button>
+      <button class="project-link" onclick="openWindow('contact')">✉️ Contact</button>
+    </div>
+    <div style="margin-top:16px;padding:8px;border:1px inset #808080;background:#f0f0f0;font-size:13px;">
+      <b>System Info:</b> Portfolio OS v1.0 &nbsp;|&nbsp; RAM: Creative &nbsp;|&nbsp; CPU: Hard-working
+    </div>
+  </div>
+  <div class="win-statusbar"><span>Ready</span><span>portfolio.exe</span></div>
+</div>
+
+<!-- About Window -->
+<div class="win-window" id="win-about" style="width:600px;height:500px;top:60px;left:220px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-about')">
+    <img class="win-titlebar-icon" src="Icons/computer_explorer_cool-5.png" alt="About Me icon">
+    <span class="win-title-text">About Me — Profile.txt</span>
+    <div class="win-btn" onclick="minimizeWindow('win-about')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-about','about')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>Profile</h2>
+      <p>Hi! I'm Bruno, a Business Information Systems graduate based in Geneva. I’m interested in the intersection of business and technology, and I enjoy turning operational needs into practical digital solutions.</p>
+      <p>My background includes Python, Java, Laravel, SQL, systems analysis, and business-oriented IT projects. Outside of tech, I enjoy gaming, sports, and continuously learning new tools and technologies.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-info-block"><label>Name</label><span>Bruno</span></div>
+      <div class="about-info-block"><label>Location</label><span>Geneva, Switzerland</span></div>
+      <div class="about-info-block"><label>Email</label><span>brunogarcia99@gmail.com</span></div>
+      <div class="about-info-block"><label>Available</label><span>Open for opportunities ✓</span></div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span>Ready</span><span>4 items</span></div>
+</div>
+
+<!-- Skills Window -->
+<div class="win-window" id="win-skills" style="width:600px;height:500px;top:80px;left:240px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-skills')">
+    <img class="win-titlebar-icon" src="Icons/users-0.png" alt="Skills icon">
+    <span class="win-title-text">Skills & Languages — Overview.txt</span>
+    <div class="win-btn" onclick="minimizeWindow('win-skills')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-skills','skills')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>Skills</h2>
+      <div class="skill-bar-row"><div class="skill-bar-label">Java</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:95%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Python</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:95%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Laravel / PHP</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">SQL / MySQL</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">UML / BPMN</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Business Analysis</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Networking / Systems</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+    </div>
+    <div class="content-section" style="margin-top:12px;">
+      <h2>Languages</h2>
+      <div class="skill-bar-row"><div class="skill-bar-label">French</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:100%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Portuguese</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:100%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">English</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:98%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">Italian</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+      <div class="skill-bar-row"><div class="skill-bar-label">German</div><div class="skill-bar-outer"><div class="skill-bar-fill" style="width:20%"></div></div></div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span>Ready</span><span>skills.ini</span></div>
+</div>
+
+<!-- Projects Window -->
+<div class="win-window" id="win-projects" style="width:600px;height:500px;top:100px;left:180px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-projects')">
+    <img class="win-titlebar-icon" src="Icons/directory_open_file_mydocs_2k-2.png" alt="Projects icon">
+    <span class="win-title-text">Projects — My Work</span>
+    <div class="win-btn" onclick="minimizeWindow('win-projects')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-projects','projects')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>Projects</h2>
+      <div class="project-card">
+        <h3>Bachelor Thesis – Generative AI for Competitive Map Design</h3>
+        <p style="font-size:13px;margin-top:4px;">Bachelor’s thesis on automating competitive level design with generative AI for Counter-Strike maps. Developed a hybrid pipeline combining procedural generation, Random Forest evaluation, and genetic optimization. Used Python, NumPy, Pandas, NetworkX, and scikit-learn to extract map features and score layouts. The project focused on generating playable, balanced, and strategically coherent maps. It also included quantitative analysis and bot-based testing to validate the results.</p>
+        <div class="tags"><span class="tag">2025-2026</span><span class="tag">Python</span><span class="tag">Data Analysis</span><span class="tag">Machine Learning</span><span class="tag">Procedural Generation</span><span class="tag">Graph & Topological Analysis</span><span class="tag">Reinforcement Learning</span><span class="tag">AI-Based Content Generation</span></div>
+        <a class="project-link" href="https://github.com/BrunoBrancoGarcia/TravailDeBachelorCS" target="_blank" rel="noopener noreferrer" style="margin-left:6px;">📂 GitHub</a>
+      </div>
+      <div class="project-card">
+        <h3>Mobile Communication App for Firefighters of Plan-les-Ouates</h3>
+        <p style="font-size:13px;margin-top:4px;">This project involved developing a full-stack mobile communication app for over 30 users with PHP/Laravel and JS/CSS. My role included gathering requirements, helping manage the task backlog, designing the system architecture, and building a secure MySQL backend with token-based API authentication. I also worked in an Agile Scrum team, where I participated in code reviews and resolved integration issues.</p>
+        <div class="tags"><span class="tag">2025</span><span class="tag">PHP / Laravel</span><span class="tag">MySQL</span><span class="tag">JavaScript / CSS</span><span class="tag">REST API</span><span class="tag">Requirements Gathering</span><span class="tag">System Architecture</span><span class="tag">Backlog Management</span><span class="tag">Agile Scrum</span><span class="tag">Code Review</span><span class="tag">Integration Troubleshooting</span><span class="tag">Mobile App Development</span><span class="tag">User Management</span></div>
+        <a class="project-link" href="https://github.com/BrunoBrancoGarcia/adminPompierFront" target="_blank" rel="noopener noreferrer" style="margin-left:6px;">📂 GitHub (Admin Frontend)</a>
+        <a class="project-link" href="https://github.com/Zecomodore/projetsurmandat_groupe07_backend" target="_blank" rel="noopener noreferrer" style="margin-left:6px;">📂 GitHub (Backend)</a>
+        <a class="project-link" href="https://github.com/Zecomodore/projetsurmandat_groupe07" target="_blank" rel="noopener noreferrer" style="margin-left:6px;">📂 GitHub (App Frontend)</a>
+      </div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span>3 objects</span><span>Last modified: 2026</span></div>
+</div>
+
+<!-- Experience Window -->
+<div class="win-window" id="win-experience" style="width:620px;height:500px;top:90px;left:200px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-experience')">
+    <img class="win-titlebar-icon" src="Icons/network_cool_two_pcs-0.png" alt="Experience icon">
+    <span class="win-title-text">Experience — Resume.doc</span>
+    <div class="win-btn" onclick="minimizeWindow('win-experience')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-experience','experience')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>Work Experience</h2>
+      <div class="project-card">
+        <h3>Tutor at ARA Association</h3>
+        <p style="font-size:12px;color:#808080;">2023 – 2025</p>
+        <p style="font-size:13px;margin-top:4px;">• Provided personalized academic support in English and IT, including Python and networking (cisco), for 3 to 5 students per week.<br>• Prepared teaching materials and tracked student progress.<br>• Applied strong problem-solving skills to address individual learning challenges and improve academic outcomes.</p>
+      </div>
+      <div class="project-card">
+        <h3>Administrative Assistant at Collège de Drize</h3>
+        <p style="font-size:12px;color:#808080;">2020 – 2021</p>
+        <p style="font-size:13px;margin-top:4px;">• Handled daily administrative tasks, reception, and student records.<br>• Coordinated mail and communication distribution, including largescale email campaigns.<br>• Used Word and Excel to maintain data accuracy in a bilingual educational setting.</p>
+      </div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span>Ready</span><span>Resume.doc</span></div>
+</div>
+
+<!-- Education Window -->
+<div class="win-window" id="win-education" style="width:580px;height:460px;top:120px;left:260px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-education')">
+    <img class="win-titlebar-icon" src="Icons/notepad-5.png" alt="Education icon">
+    <span class="win-title-text">Education — Formations.txt</span>
+    <div class="win-btn" onclick="minimizeWindow('win-education')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-education','education')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>Education</h2>
+      <div class="project-card">
+        <h3>Bachelor's degree in Business Information Systems</h3>
+        <p style="font-size:12px;color:#808080;">Haute École de Gestion de Genève, 2026</p>
+        <p style="font-size:13px;margin-top:4px;">Studied Business Information Systems at HEG Geneva, focusing on information systems, databases, programming, networks, and business analysis. Completed academic projects in UML modelling, systems administration, and other mandatory professional assignments. Strengthened both technical and analytical skills through a balance of theory and hands-on work.</p>
+      </div>
+      <div class="project-card">
+        <h3>Maturité professionnelle commerciale (3mp+1)</h3>
+        <p style="font-size:12px;color:#808080;">École de commerce Aimée-Stitelmann, 2021</p>
+        <p style="font-size:13px;margin-top:4px;">Completed specialized courses in office computing, economics, management, and accounting. Completed a two-week professional internship at Espace Entreprise. Followed reinforced language courses in English, German, and Italian.</p>
+      </div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span>Ready</span><span>Education.txt</span></div>
+</div>
+
+
+<!-- Contact Window -->
+<div class="win-window" id="win-contact" style="width:540px;height:440px;top:110px;left:240px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-contact')">
+    <img class="win-titlebar-icon" src="Icons/envelope_closed-0.png" alt="Contact icon">
+    <span class="win-title-text">Contact Me</span>
+    <div class="win-btn" onclick="minimizeWindow('win-contact')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-contact','contact')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Help</span>
+  </div>
+  <div class="win-content">
+    <div class="content-section">
+      <h2>✉️ Get In Touch</h2>
+      <p>Want to work together or just say hi?</p>
+
+      <div class="contact-field" style="margin-top:12px;">
+        <label>📧 Email:</label>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:4px;">
+          <input type="text" id="email-display" value="brunogarcia99@gmail.com" readonly
+            style="flex:1;background:#f0f0f0;cursor:text;" />
+          <button class="contact-submit" onclick="copyEmail()" style="white-space:nowrap;">📋 Copy</button>
+        </div>
+        <div id="copy-confirm" style="font-size:13px;color:green;margin-top:4px;display:none;">✔ Copied to clipboard!</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:8px;background:#f0f0f0;border:1px inset #808080;font-size:13px;display:flex;flex-direction:column;gap:10px;">
+
+      <div class="connect-row" onclick="window.open('https://www.linkedin.com/in/bruno-branco-778211254/','_blank')">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span>💼 Establishing connection to LinkedIn...</span>
+          <span id="li-pct">0%</span>
+        </div>
+        <div class="skill-bar-outer">
+          <div class="skill-bar-fill" id="li-bar" style="width:0%;transition:width 1.4s ease;"></div>
+        </div>
+        <div style="font-size:12px;color:#808080;margin-top:2px;" id="li-status">Initializing...</div>
+      </div>
+
+      <div class="connect-row" onclick="window.open('https://github.com/BrunoBrancoGarcia','_blank')">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span>🌐 Establishing connection to GitHub...</span>
+          <span id="gh-pct">0%</span>
+        </div>
+        <div class="skill-bar-outer">
+          <div class="skill-bar-fill" id="gh-bar" style="width:0%;transition:width 1.6s ease;"></div>
+        </div>
+        <div style="font-size:12px;color:#808080;margin-top:2px;" id="gh-status">Initializing...</div>
+      </div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span id="contact-statusbar">Ready</span></div>
+</div>
+
+<!-- Paint Window -->
+<div class="win-window" id="win-paint" style="position:fixed;width:700px;height:540px;top:110px;left:230px;">
+  <div class="win-titlebar">
+    <img class="win-titlebar-icon" src="Icons/paint_old-0.png" alt="Paint icon">
+    <span class="win-title-text">untitled - Paint</span>
+    <div class="win-btn" onclick="minimizeWindow('win-paint')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-paint','paint')">✕</div>
+  </div>
+  <div class="win-menubar">
+    <span>File</span><span>Edit</span><span>View</span><span>Image</span><span>Colors</span><span>Help</span>
+  </div>
+  <div class="win-content paint-content">
+    <div class="paint-app">
+      <div class="paint-top-strip"></div>
+      <div class="paint-workspace">
+        <div class="paint-toolbox">
+          <div class="paint-tool-btn active" onclick="setPaintTool('pencil', this)" title="Pencil">✎</div>
+          <div class="paint-tool-btn" onclick="setPaintTool('line', this)" title="Line">／</div>
+          <div class="paint-tool-btn" onclick="setPaintTool('rect', this)" title="Rectangle">▭</div>
+          <div class="paint-tool-btn" onclick="setPaintTool('eraser', this)" title="Eraser">⌫</div>
+          <div class="paint-tool-btn" onclick="clearPaint()" title="Clear">✕</div>
+        </div>
+        <div class="paint-canvas-wrap">
+          <canvas id="paint-canvas" width="460" height="280"></canvas>
+        </div>
+      </div>
+      <div class="paint-palette-bar">
+        <div class="paint-current" id="paint-current"></div>
+        <div class="paint-colors">
+          <div class="paint-color active" data-color="#000000" style="background:#000000" onclick="setPaintColor('#000000', this)"></div>
+          <div class="paint-color" data-color="#808080" style="background:#808080" onclick="setPaintColor('#808080', this)"></div>
+          <div class="paint-color" data-color="#800000" style="background:#800000" onclick="setPaintColor('#800000', this)"></div>
+          <div class="paint-color" data-color="#808000" style="background:#808000" onclick="setPaintColor('#808000', this)"></div>
+          <div class="paint-color" data-color="#008000" style="background:#008000" onclick="setPaintColor('#008000', this)"></div>
+          <div class="paint-color" data-color="#008080" style="background:#008080" onclick="setPaintColor('#008080', this)"></div>
+          <div class="paint-color" data-color="#000080" style="background:#000080" onclick="setPaintColor('#000080', this)"></div>
+          <div class="paint-color" data-color="#800080" style="background:#800080" onclick="setPaintColor('#800080', this)"></div>
+          <div class="paint-color" data-color="#ffffff" style="background:#ffffff" onclick="setPaintColor('#ffffff', this)"></div>
+          <div class="paint-color" data-color="#c0c0c0" style="background:#c0c0c0" onclick="setPaintColor('#c0c0c0', this)"></div>
+          <div class="paint-color" data-color="#ff0000" style="background:#ff0000" onclick="setPaintColor('#ff0000', this)"></div>
+          <div class="paint-color" data-color="#ffff00" style="background:#ffff00" onclick="setPaintColor('#ffff00', this)"></div>
+          <div class="paint-color" data-color="#00ff00" style="background:#00ff00" onclick="setPaintColor('#00ff00', this)"></div>
+          <div class="paint-color" data-color="#00ffff" style="background:#00ffff" onclick="setPaintColor('#00ffff', this)"></div>
+          <div class="paint-color" data-color="#0000ff" style="background:#0000ff" onclick="setPaintColor('#0000ff', this)"></div>
+          <div class="paint-color" data-color="#ff00ff" style="background:#ff00ff" onclick="setPaintColor('#ff00ff', this)"></div>
+          <div class="paint-color" data-color="#f4cccc" style="background:#f4cccc" onclick="setPaintColor('#f4cccc', this)"></div>
+          <div class="paint-color" data-color="#fce5cd" style="background:#fce5cd" onclick="setPaintColor('#fce5cd', this)"></div>
+          <div class="paint-color" data-color="#fff2cc" style="background:#fff2cc" onclick="setPaintColor('#fff2cc', this)"></div>
+          <div class="paint-color" data-color="#d9ead3" style="background:#d9ead3" onclick="setPaintColor('#d9ead3', this)"></div>
+          <div class="paint-color" data-color="#d0e0e3" style="background:#d0e0e3" onclick="setPaintColor('#d0e0e3', this)"></div>
+          <div class="paint-color" data-color="#cfe2f3" style="background:#cfe2f3" onclick="setPaintColor('#cfe2f3', this)"></div>
+          <div class="paint-color" data-color="#d9d2e9" style="background:#d9d2e9" onclick="setPaintColor('#d9d2e9', this)"></div>
+          <div class="paint-color" data-color="#ead1dc" style="background:#ead1dc" onclick="setPaintColor('#ead1dc', this)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="win-statusbar"><span id="paint-status">For Help, click Help Topics on the Help Menu.</span><span id="paint-pos">0,0</span></div>
+</div>
+
+<!-- Minesweeper Window -->
+<div class="win-window" id="win-minesweeper" style="width:430px;height:525px;top:80px;left:320px;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-minesweeper')">
+    <img class="win-titlebar-icon" src="Icons/minesweeper.png" alt="Minesweeper icon">
+    <span class="win-title-text">Minesweeper</span>
+    <div class="win-btn" onclick="minimizeWindow('win-minesweeper')">_</div>
+    <div class="win-btn">□</div>
+    <div class="win-btn" onclick="closeWindow('win-minesweeper','minesweeper')">✕</div>
+  </div>
+  <div class="win-menubar">
+  </div>
+  <div class="win-content" style="padding:10px; background:#c0c0c0; display:flex; flex-direction:column; gap:8px;">
+    <!-- Display Panel -->
+    <div style="background:#c0c0c0; padding:7px; border:3px solid; border-color:#ffffff #808080 #808080 #ffffff; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+      <!-- Mines Counter -->
+      <div class="minesweeper-led" id="mines-counter">010</div>
+      <!-- Smiley Button -->
+      <button onclick="initMinesweeper()" style="width:56px; height:56px; background:#c0c0c0; border:2px solid; border-color:#ffffff #808080 #808080 #ffffff; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;">
+        <img id="minesweeper-face" class="mine-face" src="Icons/minesweeperReset.png" alt="Reset game">
+      </button>
+      <!-- Time Counter -->
+      <div class="minesweeper-led" id="time-counter">000</div>
+    </div>
+    <!-- Minesweeper Grid -->
+    <div id="minesweeper-grid" style="display:grid; grid-template-columns:repeat(9,32px); gap:0; background:#bdbdbd; padding:4px; width:fit-content; margin:0 auto; border:3px solid; border-color:#ffffff #808080 #808080 #ffffff;">
+    </div>
+  </div>
+  <div class="win-statusbar"><span id="minesweeper-status">Ready</span></div>
+</div>
+
+<!-- Error Dialog -->
+<div class="error-dialog" id="error-dialog" style="top:40%;left:50%;transform:translate(-50%,-50%);">
+  <div class="win-titlebar">
+    <span class="win-title-text">⚠️ Error</span>
+    <div class="win-btn" onclick="closeError()">✕</div>
+  </div>
+  <div class="error-body">
+    <div class="error-icon">🚫</div>
+    <div>The Recycle Bin is empty.<br><br>There's nothing to delete here — this portfolio is <b>glitch-free!</b></div>
+  </div>
+  <div class="error-btns">
+    <button class="contact-submit" onclick="closeError()" style="padding:4px 30px;">OK</button>
+  </div>
+</div>
+
+<!-- Send success dialog -->
+<div class="error-dialog" id="success-dialog" style="top:40%;left:50%;transform:translate(-50%,-50%);">
+  <div class="win-titlebar" style="background:#008000;">
+    <span class="win-title-text">✅ Message Sent!</span>
+    <div class="win-btn" onclick="document.getElementById('success-dialog').classList.remove('visible')">✕</div>
+  </div>
+  <div class="error-body">
+    <div class="error-icon">📨</div>
+    <div>Your message has been sent successfully!<br><br>I'll get back to you as soon as possible. 🎉</div>
+  </div>
+  <div class="error-btns">
+    <button class="contact-submit" onclick="document.getElementById('success-dialog').classList.remove('visible')" style="padding:4px 30px;">OK</button>
+  </div>
+</div>
+
+<!-- Shut Down dialog -->
+<div class="error-dialog" id="shutdown-dialog" style="top:40%;left:50%;transform:translate(-50%,-50%);width:322px;z-index:10001;">
+  <div class="win-titlebar">
+    <span class="win-title-text">Shut Down BrunoOS</span>
+    <div class="win-btn" onclick="closeShutdownDialog()">✕</div>
+  </div>
+  <div class="shutdown-body">
+    <img class="shutdown-icon" src="Icons/computer_explorer_cool-5.png" alt="Computer icon">
+    <div class="shutdown-main">
+      <p>What do you want the computer to do?</p>
+      <div class="shutdown-options">
+        <label><input type="radio" name="shutdown-action" value="shutdown" checked> Shut down</label>
+        <label><input type="radio" name="shutdown-action" value="restart"> Restart</label>
+        <label><input type="radio" name="shutdown-action" value="dos"> Restart in MS-DOS mode</label>
+      </div>
+    </div>
+  </div>
+  <div class="shutdown-btns">
+    <button class="shutdown-btn" onclick="confirmShutdownAction()">OK</button>
+    <button class="shutdown-btn" onclick="closeShutdownDialog()">Cancel</button>
+    <button class="shutdown-btn" onclick="showShutdownHelp()">Help</button>
+  </div>
+</div>
+
+<!-- Shutdown blocked dialog -->
+<div class="error-dialog" id="shutdown-blocked-dialog" style="top:40%;left:50%;transform:translate(-50%,-50%);z-index:10002;">
+  <div class="win-titlebar">
+    <span class="win-title-text">BrunoOS 98</span>
+    <div class="win-btn" onclick="closeShutdownBlocked()">✕</div>
+  </div>
+  <div class="error-body">
+    <div class="error-icon">🔒</div>
+    <div id="shutdown-blocked-text">Shutdown is disabled in this portfolio demo.<br><br>You can keep exploring safely 😄</div>
+  </div>
+  <div class="error-btns">
+    <button class="contact-submit" onclick="closeShutdownBlocked()" style="padding:4px 30px;">OK</button>
+  </div>
+</div>
+
+<div id="taskbar">
+  <div id="start-btn" onclick="toggleStart()">
+    <img src="Icons/windows-0.png" alt="Start icon">
+    <b>Start</b>
+  </div>
+  <div id="taskbar-buttons"></div>
+  <div id="clock">12:00 PM</div>
+</div>
+
+<div id="start-menu" aria-hidden="true">
+  <div class="start-menu-rail"><span><span class="rail-cap">B</span>runo<span class="rail-cap">OS</span> 98</span></div>
+  <div class="start-menu-items">
+    <div class="start-menu-item" onclick="openWindow('welcome'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/notepad-5.png" alt="Welcome">
+      <span>Welcome</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('about'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/computer_explorer_cool-5.png" alt="About Me">
+      <span>About Me</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('skills'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/users-0.png" alt="Skills">
+      <span>Skills</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('projects'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/directory_open_file_mydocs_2k-2.png" alt="Projects">
+      <span>Projects</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('experience'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/network_cool_two_pcs-0.png" alt="Experience">
+      <span>Experience</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('contact'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/envelope_closed-0.png" alt="Contact Me">
+      <span>Contact Me</span>
+    </div>
+    <div class="start-menu-separator"></div>
+    <div class="start-menu-item" onclick="showError(); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/recycle_bin_empty_cool-5.png" alt="Recycle Bin">
+      <span>Recycle Bin</span>
+    </div>
+    <div class="start-menu-separator"></div>
+    <div class="start-menu-item" onclick="openShutdownDialog(); toggleStart(false);">
+      <img class="start-menu-item-icon" src="Icons/shut_down_normal-5.png" alt="Shut Down">
+      <span>Shut Down...</span>
+    </div>
+  </div>
+</div>
+
+<div id="selection-box"></div>
+
+<script>
+const windows = { welcome: 'win-welcome', about: 'win-about', skills: 'win-skills', projects: 'win-projects', experience: 'win-experience', education: 'win-education', contact: 'win-contact', paint: 'win-paint', minesweeper: 'win-minesweeper' };
+const taskbarBtns = {};
+let zIndex = 100;
+const iconDrag = { icon: null, offsetX: 0, offsetY: 0, moved: false, startLeft: 0, startTop: 0 };
+
+const paintState = {
+  drawing: false,
+  color: '#000000',
+  tool: 'pencil',
+  ctx: null,
+  canvas: null,
+  startX: 0,
+  startY: 0,
+  snapshot: null
+};
+
+const taskbarIcons = {
+  welcome: '🖥️', about: '👤', skills: '🧠', projects: '📁', experience: '💼', contact: '✉️', paint: '🎨', minesweeper: '💣'
+};
+const taskbarTitles = {
+  welcome: 'Welcome!', about: 'About Me', skills: 'Skills', projects: 'Projects', experience: 'Experience', contact: 'Contact', paint: 'Paint', minesweeper: 'Minesweeper'
+};
+
+function toggleStart(force) {
+  const menu = document.getElementById('start-menu');
+  const btn = document.getElementById('start-btn');
+  const shouldOpen = typeof force === 'boolean' ? force : !menu.classList.contains('visible');
+  menu.classList.toggle('visible', shouldOpen);
+  menu.setAttribute('aria-hidden', String(!shouldOpen));
+  btn.classList.toggle('open', shouldOpen);
+}
+
+function openWindow(name) {
+  const id = windows[name];
+  const el = document.getElementById(id);
+  el.classList.add('visible');
+  el.style.display = 'flex';
+  if (name === 'paint') initPaint();
+  if (name === 'minesweeper' && !minesweeper.grid.length) initMinesweeper();
+  if (name === 'contact') animateConnections();
+  focusWindow(id);
+  if (!taskbarBtns[name]) addTaskbarBtn(name);
+  taskbarBtns[name].classList.add('active');
+}
+
+function initPaint() {
+  if (paintState.ctx) return;
+  const canvas = document.getElementById('paint-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  paintState.canvas = canvas;
+  paintState.ctx = ctx;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  setPaintColor('#000000', document.querySelector('.paint-color[data-color="#000000"]'));
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - rect.left) * (canvas.width / rect.width),
+      y: (e.clientY - rect.top) * (canvas.height / rect.height)
+    };
+  }
+
+  function updatePosition(x, y) {
+    const posEl = document.getElementById('paint-pos');
+    if (posEl) posEl.textContent = `${Math.round(x)},${Math.round(y)}`;
+  }
+
+  function drawPreview(toX, toY) {
+    if (!paintState.snapshot) return;
+    ctx.putImageData(paintState.snapshot, 0, 0);
+    ctx.strokeStyle = paintState.color;
+    if (paintState.tool === 'line') {
+      ctx.beginPath();
+      ctx.moveTo(paintState.startX, paintState.startY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+      ctx.beginPath();
+    }
+    if (paintState.tool === 'rect') {
+      const x = Math.min(paintState.startX, toX);
+      const y = Math.min(paintState.startY, toY);
+      const w = Math.abs(toX - paintState.startX);
+      const h = Math.abs(toY - paintState.startY);
+      ctx.strokeRect(x, y, w, h);
+    }
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    paintState.drawing = true;
+    const pos = getPos(e);
+    paintState.startX = pos.x;
+    paintState.startY = pos.y;
+    paintState.snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    if (paintState.tool === 'pencil') {
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+    if (paintState.tool === 'eraser') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(pos.x - 5, pos.y - 5, 10, 10);
+    }
+  });
+
+  canvas.addEventListener('mousemove', e => {
+    const pos = getPos(e);
+    updatePosition(pos.x, pos.y);
+    if (!paintState.drawing) return;
+
+    if (paintState.tool === 'pencil') {
+      ctx.strokeStyle = paintState.color;
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    if (paintState.tool === 'eraser') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(pos.x - 5, pos.y - 5, 10, 10);
+    }
+    if (paintState.tool === 'line' || paintState.tool === 'rect') {
+      drawPreview(pos.x, pos.y);
+    }
+  });
+
+  const stopDrawing = e => {
+    if (paintState.drawing && e) {
+      const pos = getPos(e);
+      if (paintState.tool === 'line' || paintState.tool === 'rect') {
+        drawPreview(pos.x, pos.y);
+      }
+    }
+    paintState.drawing = false;
+    paintState.snapshot = null;
+    ctx.beginPath();
+  };
+
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+}
+
+function setPaintTool(tool, el) {
+  paintState.tool = tool;
+  document.querySelectorAll('.paint-tool-btn').forEach(item => item.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const status = document.getElementById('paint-status');
+  if (!status) return;
+  if (tool === 'pencil') status.textContent = 'Draw free-form lines.';
+  if (tool === 'line') status.textContent = 'Draw straight lines by dragging.';
+  if (tool === 'rect') status.textContent = 'Draw rectangles by dragging.';
+  if (tool === 'eraser') status.textContent = 'Erase small areas.';
+}
+
+function setPaintColor(color, el) {
+  paintState.color = color;
+  document.querySelectorAll('.paint-color').forEach(item => item.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const current = document.getElementById('paint-current');
+  if (current) current.style.background = color;
+}
+
+function clearPaint() {
+  if (!paintState.ctx || !paintState.canvas) return;
+  paintState.ctx.fillStyle = '#ffffff';
+  paintState.ctx.fillRect(0, 0, paintState.canvas.width, paintState.canvas.height);
+}
+
+function closeWindow(id, name) {
+  document.getElementById(id).classList.remove('visible');
+  document.getElementById(id).style.display = 'none';
+  if (taskbarBtns[name]) {
+    taskbarBtns[name].remove();
+    delete taskbarBtns[name];
+  }
+}
+
+function minimizeWindow(id) {
+  document.getElementById(id).style.display = 'none';
+  const name = Object.keys(windows).find(k => windows[k] === id);
+  if (taskbarBtns[name]) taskbarBtns[name].classList.remove('active');
+}
+
+function focusWindow(id) {
+  document.querySelectorAll('.win-window').forEach(w => w.classList.add('inactive'));
+  const el = document.getElementById(id);
+  el.classList.remove('inactive');
+  el.style.zIndex = ++zIndex;
+  const name = Object.keys(windows).find(k => windows[k] === id);
+  Object.keys(taskbarBtns).forEach(k => taskbarBtns[k].classList.remove('active'));
+  if (taskbarBtns[name]) taskbarBtns[name].classList.add('active');
+}
+
+function addTaskbarBtn(name) {
+  const btn = document.createElement('div');
+  btn.className = 'taskbar-btn active';
+  btn.innerHTML = taskbarIcons[name] + ' ' + taskbarTitles[name];
+  btn.onclick = () => {
+    const id = windows[name];
+    const el = document.getElementById(id);
+    if (el.style.display === 'none') {
+      el.style.display = 'flex';
+      focusWindow(id);
+      btn.classList.add('active');
+    } else if (!el.classList.contains('inactive')) {
+      minimizeWindow(id);
+    } else {
+      focusWindow(id);
+    }
+  };
+  document.getElementById('taskbar-buttons').appendChild(btn);
+  taskbarBtns[name] = btn;
+}
+
+function initDesktopIcons() {
+  const desktop = document.getElementById('desktop');
+  const icons = Array.from(document.querySelectorAll('#desktop .icon'));
+  const desktopRect = desktop.getBoundingClientRect();
+
+  const initialPositions = icons.map(icon => {
+    const rect = icon.getBoundingClientRect();
+    return {
+      icon,
+      left: rect.left - desktopRect.left,
+      top: rect.top - desktopRect.top
+    };
+  });
+
+  initialPositions.forEach(({ icon, left, top }) => {
+    icon.style.left = `${left}px`;
+    icon.style.top = `${top}px`;
+    icon.style.position = 'absolute';
+  });
+
+  // Paint icon stays in grid position like other icons
+  const paintIcon = document.getElementById('icon-paint');
+  if (paintIcon) {
+    paintIcon.style.position = 'absolute';
+  }
+
+  icons.forEach(icon => {
+    icon.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      iconDrag.icon = icon;
+      iconDrag.moved = false;
+      iconDrag.startLeft = parseFloat(icon.style.left) || 0;
+      iconDrag.startTop = parseFloat(icon.style.top) || 0;
+      const iconRect = icon.getBoundingClientRect();
+      iconDrag.offsetX = e.clientX - iconRect.left;
+      iconDrag.offsetY = e.clientY - iconRect.top;
+      selectIcon(icon.id);
+      e.preventDefault();
+    });
+  });
+}
+
+function hasIconCollision(activeIcon, testLeft, testTop) {
+  const icons = Array.from(document.querySelectorAll('#desktop .icon'));
+  const activeWidth = activeIcon.offsetWidth;
+  const activeHeight = activeIcon.offsetHeight;
+  const gap = 4;
+
+  return icons.some(icon => {
+    if (icon === activeIcon) return false;
+    const otherLeft = parseFloat(icon.style.left) || 0;
+    const otherTop = parseFloat(icon.style.top) || 0;
+    const otherWidth = icon.offsetWidth;
+    const otherHeight = icon.offsetHeight;
+
+    const noOverlap =
+      testLeft + activeWidth + gap <= otherLeft ||
+      otherLeft + otherWidth + gap <= testLeft ||
+      testTop + activeHeight + gap <= otherTop ||
+      otherTop + otherHeight + gap <= testTop;
+
+    return !noOverlap;
+  });
+}
+
+function findNearestFreeIconPosition(activeIcon, preferredLeft, preferredTop) {
+  const desktop = document.getElementById('desktop');
+  const iconWidth = activeIcon.offsetWidth;
+  const iconHeight = activeIcon.offsetHeight;
+  const minLeft = 0;
+  const minTop = 0;
+  const maxLeft = Math.max(0, desktop.clientWidth - iconWidth);
+  const maxTop = Math.max(0, desktop.clientHeight - iconHeight);
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const baseLeft = clamp(preferredLeft, minLeft, maxLeft);
+  const baseTop = clamp(preferredTop, minTop, maxTop);
+
+  if (!hasIconCollision(activeIcon, baseLeft, baseTop)) {
+    return { left: baseLeft, top: baseTop };
+  }
+
+  const step = 8;
+  const maxRadius = Math.max(maxLeft, maxTop);
+  for (let radius = step; radius <= maxRadius; radius += step) {
+    for (let angle = 0; angle < 360; angle += 20) {
+      const rad = angle * Math.PI / 180;
+      const testLeft = clamp(baseLeft + Math.cos(rad) * radius, minLeft, maxLeft);
+      const testTop = clamp(baseTop + Math.sin(rad) * radius, minTop, maxTop);
+      if (!hasIconCollision(activeIcon, testLeft, testTop)) {
+        return { left: testLeft, top: testTop };
+      }
+    }
+  }
+
+  return null;
+}
+
+// Drag
+let dragging = null, dragOffX = 0, dragOffY = 0;
+function startDrag(e, id) {
+  dragging = id;
+  const el = document.getElementById(id);
+  const rect = el.getBoundingClientRect();
+  dragOffX = e.clientX - rect.left;
+  dragOffY = e.clientY - rect.top;
+  focusWindow(id);
+  e.preventDefault();
+}
+document.addEventListener('mousemove', e => {
+  if (iconDrag.icon) {
+    const desktop = document.getElementById('desktop');
+    const desktopRect = desktop.getBoundingClientRect();
+    const iconWidth = iconDrag.icon.offsetWidth;
+    const iconHeight = iconDrag.icon.offsetHeight;
+
+    let left = e.clientX - desktopRect.left - iconDrag.offsetX;
+    let top = e.clientY - desktopRect.top - iconDrag.offsetY;
+
+    left = Math.max(0, Math.min(left, desktop.clientWidth - iconWidth));
+    top = Math.max(0, Math.min(top, desktop.clientHeight - iconHeight));
+
+    iconDrag.icon.style.left = `${left}px`;
+    iconDrag.icon.style.top = `${top}px`;
+    iconDrag.moved = true;
+    return;
+  }
+
+  if (!dragging) return;
+  const el = document.getElementById(dragging);
+  el.style.left = (e.clientX - dragOffX) + 'px';
+  el.style.top = (e.clientY - dragOffY) + 'px';
+});
+document.addEventListener('mouseup', () => {
+  dragging = null;
+  if (iconDrag.icon) {
+    const currentLeft = parseFloat(iconDrag.icon.style.left) || 0;
+    const currentTop = parseFloat(iconDrag.icon.style.top) || 0;
+
+    if (hasIconCollision(iconDrag.icon, currentLeft, currentTop)) {
+      const resolved = findNearestFreeIconPosition(iconDrag.icon, currentLeft, currentTop)
+        || findNearestFreeIconPosition(iconDrag.icon, iconDrag.startLeft, iconDrag.startTop);
+
+      if (resolved) {
+        iconDrag.icon.style.left = `${resolved.left}px`;
+        iconDrag.icon.style.top = `${resolved.top}px`;
+      } else {
+        iconDrag.icon.style.left = `${iconDrag.startLeft}px`;
+        iconDrag.icon.style.top = `${iconDrag.startTop}px`;
+      }
+    }
+  }
+  iconDrag.icon = null;
+});
+
+// Click on window to focus
+document.querySelectorAll('.win-window').forEach(w => {
+  w.addEventListener('mousedown', () => focusWindow(w.id));
+});
+
+// Clock
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Icon select
+function selectIcon(id) {
+  document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+  document.getElementById(id).classList.add('selected');
+}
+document.addEventListener('click', e => {
+  const clickedInsideStart = e.target.closest('#start-btn') || e.target.closest('#start-menu');
+  if (!e.target.closest('.icon')) {
+    document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+  }
+  if (!clickedInsideStart) {
+    toggleStart(false);
+  }
+});
+
+// Error / success
+function showError() { document.getElementById('error-dialog').classList.add('visible'); }
+function closeError() { document.getElementById('error-dialog').classList.remove('visible'); }
+
+function sendMessage() {
+  document.getElementById('success-dialog').classList.add('visible');
+}
+
+function openShutdownDialog() {
+  document.getElementById('shutdown-dialog').classList.add('visible');
+}
+
+function closeShutdownDialog() {
+  document.getElementById('shutdown-dialog').classList.remove('visible');
+}
+
+function confirmShutdownAction() {
+  const selected = document.querySelector('input[name="shutdown-action"]:checked');
+  const action = selected ? selected.value : 'shutdown';
+  const messages = {
+    shutdown: "Access denied.",
+    restart: "Not happening.",
+    dos: "Way too old for that."
+  };
+  closeShutdownDialog();
+  showShutdownBlocked(messages[action] || messages.shutdown);
+}
+
+function closeShutdownBlocked() {
+  document.getElementById('shutdown-blocked-dialog').classList.remove('visible');
+}
+
+function showShutdownHelp() {
+  closeShutdownDialog();
+  showShutdownBlocked('Keep looking around.');
+}
+
+function showShutdownBlocked(message) {
+  const text = document.getElementById('shutdown-blocked-text');
+  if (text) {
+    text.innerHTML = message;
+  }
+  document.getElementById('shutdown-blocked-dialog').classList.add('visible');
+}
+
+function centerWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const rect = el.getBoundingClientRect();
+  const left = Math.max(16, Math.round((window.innerWidth - rect.width) / 2));
+  const top = Math.max(16, Math.round((window.innerHeight - rect.height - 28) / 2));
+  el.style.left = `${left}px`;
+  el.style.top = `${top}px`;
+}
+
+// Minesweeper Game Logic
+let minesweeper = {
+  grid: [],
+  revealed: [],
+  flagged: [],
+  gameOver: false,
+  won: false,
+  mineCount: 10,
+  size: 9,
+  time: 0,
+  timer: null
+};
+
+function initMinesweeper() {
+  minesweeper = {
+    grid: [],
+    revealed: [],
+    flagged: [],
+    gameOver: false,
+    won: false,
+    mineCount: 10,
+    size: 9,
+    time: 0,
+    timer: null
+  };
+
+  // Create empty grid
+  for (let i = 0; i < minesweeper.size; i++) {
+    minesweeper.grid[i] = [];
+    minesweeper.revealed[i] = [];
+    minesweeper.flagged[i] = [];
+    for (let j = 0; j < minesweeper.size; j++) {
+      minesweeper.grid[i][j] = 0;
+      minesweeper.revealed[i][j] = false;
+      minesweeper.flagged[i][j] = false;
+    }
+  }
+
+  // Place mines randomly
+  let minesPlaced = 0;
+  while (minesPlaced < minesweeper.mineCount) {
+    const row = Math.floor(Math.random() * minesweeper.size);
+    const col = Math.floor(Math.random() * minesweeper.size);
+    if (minesweeper.grid[row][col] !== 'M') {
+      minesweeper.grid[row][col] = 'M';
+      minesPlaced++;
+    }
+  }
+
+  // Calculate numbers
+  for (let i = 0; i < minesweeper.size; i++) {
+    for (let j = 0; j < minesweeper.size; j++) {
+      if (minesweeper.grid[i][j] !== 'M') {
+        let count = 0;
+        for (let di = -1; di <= 1; di++) {
+          for (let dj = -1; dj <= 1; dj++) {
+            const ni = i + di, nj = j + dj;
+            if (ni >= 0 && ni < minesweeper.size && nj >= 0 && nj < minesweeper.size && minesweeper.grid[ni][nj] === 'M') count++;
+          }
+        }
+        minesweeper.grid[i][j] = count;
+      }
+    }
+  }
+
+  document.getElementById('mines-counter').textContent = String(minesweeper.mineCount).padStart(3, '0');
+  document.getElementById('time-counter').textContent = '000';
+  document.getElementById('minesweeper-status').textContent = 'Game in progress';
+  setMinesweeperFace('reset');
+  minesweeper.time = 0;
+  clearInterval(minesweeper.timer);
+  minesweeper.timer = setInterval(() => {
+    minesweeper.time++;
+    if (minesweeper.time <= 999) document.getElementById('time-counter').textContent = String(minesweeper.time).padStart(3, '0');
+  }, 1000);
+
+  renderMinesweeper();
+}
+
+function renderMinesweeper() {
+  const grid = document.getElementById('minesweeper-grid');
+  grid.innerHTML = '';
+  const colors = ['#0000ff', '#008000', '#ff0000', '#000080', '#800000', '#008080', '#000000', '#808080'];
+  
+  for (let i = 0; i < minesweeper.size; i++) {
+    for (let j = 0; j < minesweeper.size; j++) {
+      const cell = document.createElement('div');
+      cell.className = 'minesweeper-cell pointer';
+      cell.onmousedown = (e) => {
+        if (e.button === 0) revealCell(i, j);
+        else if (e.button === 2) flagCell(i, j);
+      };
+      cell.oncontextmenu = (e) => e.preventDefault();
+
+      if (minesweeper.revealed[i][j]) {
+        cell.classList.add('revealed');
+        const val = minesweeper.grid[i][j];
+        if (val === 'M') {
+          cell.textContent = '*';
+          cell.classList.add('mine');
+        } else if (val > 0) {
+          cell.textContent = val;
+          cell.style.color = colors[val - 1] || '#000000';
+          cell.style.fontWeight = 'bold';
+        } else {
+          cell.classList.add('empty');
+        }
+      } else if (minesweeper.flagged[i][j]) {
+        cell.classList.add('flagged');
+        const flag = document.createElement('img');
+        flag.src = 'Icons/MINESWEEPER_FLAG.png';
+        flag.alt = 'Flag';
+        flag.className = 'minesweeper-flag';
+        cell.appendChild(flag);
+      } else {
+        cell.style.background = '#c0c0c0';
+      }
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function setMinesweeperFace(state) {
+  const face = document.getElementById('minesweeper-face');
+  if (!face) return;
+  if (state === 'win') {
+    face.src = 'Icons/MinesweeperWin.png';
+    return;
+  }
+  if (state === 'dead') {
+    face.src = 'Icons/MinesweeperDead.png';
+    return;
+  }
+  face.src = 'Icons/minesweeperReset.png';
+}
+
+function revealCell(row, col) {
+  if (minesweeper.gameOver || minesweeper.won || minesweeper.revealed[row][col] || minesweeper.flagged[row][col]) return;
+
+  minesweeper.revealed[row][col] = true;
+
+  if (minesweeper.grid[row][col] === 'M') {
+    minesweeper.gameOver = true;
+    clearInterval(minesweeper.timer);
+    revealAllMines();
+    setMinesweeperFace('dead');
+    document.getElementById('minesweeper-status').textContent = 'Game over';
+  } else if (minesweeper.grid[row][col] === 0) {
+    // Auto-reveal adjacent cells
+    for (let di = -1; di <= 1; di++) {
+      for (let dj = -1; dj <= 1; dj++) {
+        const ni = row + di, nj = col + dj;
+        if (ni >= 0 && ni < minesweeper.size && nj >= 0 && nj < minesweeper.size && !minesweeper.revealed[ni][nj]) {
+          revealCell(ni, nj);
+        }
+      }
+    }
+  }
+
+  checkWin();
+  renderMinesweeper();
+}
+
+function flagCell(row, col) {
+  if (minesweeper.gameOver || minesweeper.won || minesweeper.revealed[row][col]) return;
+  minesweeper.flagged[row][col] = !minesweeper.flagged[row][col];
+  const flagged = minesweeper.flagged.flat().filter(f => f).length;
+  document.getElementById('mines-counter').textContent = String(Math.max(0, minesweeper.mineCount - flagged)).padStart(3, '0');
+  renderMinesweeper();
+}
+
+function revealAllMines() {
+  for (let i = 0; i < minesweeper.size; i++) {
+    for (let j = 0; j < minesweeper.size; j++) {
+      if (minesweeper.grid[i][j] === 'M') minesweeper.revealed[i][j] = true;
+    }
+  }
+}
+
+function checkWin() {
+  let allNonMinesRevealed = true;
+  for (let i = 0; i < minesweeper.size; i++) {
+    for (let j = 0; j < minesweeper.size; j++) {
+      if (minesweeper.grid[i][j] !== 'M' && !minesweeper.revealed[i][j]) {
+        allNonMinesRevealed = false;
+      }
+    }
+  }
+  if (allNonMinesRevealed) {
+    minesweeper.won = true;
+    clearInterval(minesweeper.timer);
+    document.getElementById('minesweeper-status').textContent = 'You won!';
+    setMinesweeperFace('win');
+  }
+}
+
+// Open welcome on load
+window.addEventListener('load', () => {
+  const audio = document.getElementById('startup-sound');
+  if (audio) {
+    audio.volume = 0.03;
+    audio.play().catch(() => {}); // Catch autoplay restrictions
+  }
+  initDesktopIcons();
+  openWindow('welcome');
+  requestAnimationFrame(() => centerWindow('win-welcome'));
+});
+
+function copyEmail() {
+  navigator.clipboard.writeText('brunogarcia99@gmail.com');
+  const confirm = document.getElementById('copy-confirm');
+  confirm.style.display = 'block';
+  setTimeout(() => confirm.style.display = 'none', 2000);
+}
+function animateConnections() {
+  const bars = [
+    {
+      bar: 'li-bar', pct: 'li-pct', status: 'li-status',
+      steps: ['Initializing...', 'Resolving host...', 'Authenticating...', 'Connection established ✔']
+    },
+    {
+      bar: 'gh-bar', pct: 'gh-pct', status: 'gh-status',
+      steps: ['Initializing...', 'Pinging server...', 'Loading profile...', 'Connection established ✔']
+    }
+  ];
+
+  bars.forEach(({ bar, pct, status, steps }, i) => {
+    let progress = 0;
+    let stepIndex = 0;
+    const delay = i * 600;
+
+    setTimeout(() => {
+      const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 18) + 8;
+        if (progress >= 100) {
+          progress = 100;
+          stepIndex = 3;
+          clearInterval(interval);
+          document.getElementById(status).style.color = 'green';
+        } else {
+          stepIndex = Math.floor((progress / 100) * 3);
+        }
+        document.getElementById(bar).style.width = progress + '%';
+        document.getElementById(pct).textContent = progress + '%';
+        document.getElementById(status).textContent = steps[stepIndex];
+      }, 180);
+    }, delay);
+  });
+}
+</script>
+</body>
+</html>
