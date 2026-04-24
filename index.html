@@ -2182,10 +2182,6 @@ window.addEventListener('load', () => {
   requestAnimationFrame(() => centerWindow('win-welcome'));
 });
 
-['pointerdown', 'keydown', 'touchstart'].forEach((evt) => {
-  document.addEventListener(evt, playStartupSound, { once: true });
-});
-
 function copyEmail() {
   navigator.clipboard.writeText('brunogarcia99@gmail.com');
   const confirm = document.getElementById('copy-confirm');
