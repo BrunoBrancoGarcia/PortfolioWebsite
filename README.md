@@ -45,10 +45,10 @@ https://brunobrancogarcia.github.io/PortfolioWebsite/
 
 ## Easter Eggs
 
-- Try the **Recycle Bin** 🗑️
-- Try **Shut Down** from the Start menu
-- Open **Paint** and draw something
-- See how long you last in **Minesweeper**
+- Try the Recycle Bin
+- Try Shut Down from the Start menu
+- Open Paint and draw something
+- See how long you last in Minesweeper
 
 ---
 
