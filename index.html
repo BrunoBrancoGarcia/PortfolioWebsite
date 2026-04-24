@@ -201,8 +201,8 @@
     position: fixed;
     left: 0;
     bottom: 36px;
-    width: 250px;
-    height: 300px;
+    width: 280px;
+    height: 360px;
     background: var(--win-gray);
     border-top: 2px solid var(--win-white);
     border-left: 2px solid var(--win-white);
@@ -1438,6 +1438,10 @@
       <img class="start-menu-item-icon" src="Icons/users-0.png" alt="Skills">
       <span>Skills</span>
     </div>
+    <div class="start-menu-item" onclick="openWindow('education'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/address_book-0.png" alt="Education">
+      <span>Education</span>
+    </div>
     <div class="start-menu-item" onclick="openWindow('projects'); toggleStart(false)">
       <img class="start-menu-item-icon" src="Icons/directory_open_file_mydocs_2k-2.png" alt="Projects">
       <span>Projects</span>
@@ -1449,6 +1453,18 @@
     <div class="start-menu-item" onclick="openWindow('contact'); toggleStart(false)">
       <img class="start-menu-item-icon" src="Icons/envelope_closed-0.png" alt="Contact Me">
       <span>Contact Me</span>
+    </div>
+    <div class="start-menu-item" onclick="window.open('Icons/CVBrunoAnglaisV2Privé.pdf', '_blank'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/notepad_file-2.png" alt="CV">
+      <span>CV</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('paint'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/paint_old-0.png" alt="Paint">
+      <span>Paint</span>
+    </div>
+    <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStart(false)">
+      <img class="start-menu-item-icon" src="Icons/minesweeper.png" alt="Minesweeper">
+      <span>Minesweeper</span>
     </div>
     <div class="start-menu-separator"></div>
     <div class="start-menu-item" onclick="openShutdownDialog(); toggleStart(false);">
