@@ -291,6 +291,10 @@
     background: #c0c0c0;
     display: flex;
     flex-direction: column;
+    border-top: 2px solid var(--win-white);
+    border-left: 2px solid var(--win-white);
+    border-right: 2px solid var(--win-darker);
+    border-bottom: 2px solid var(--win-darker);
   }
   .paint-top-strip {
     height: 26px;
@@ -308,19 +312,19 @@
     min-height: 0;
   }
   .paint-toolbox {
-    width: 52px;
+    width: 60px;
     padding: 4px;
     border-right: 1px solid var(--win-darker);
     background: #c0c0c0;
     display: grid;
-    grid-template-columns: repeat(2, 20px);
-    grid-auto-rows: 20px;
+    grid-template-columns: repeat(2, 26px);
+    grid-auto-rows: 26px;
     gap: 2px;
     align-content: start;
   }
   .paint-tool-btn {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     border-top: 1px solid var(--win-white);
     border-left: 1px solid var(--win-white);
     border-right: 1px solid var(--win-darker);
@@ -419,51 +423,49 @@
     padding: 7px 4px 6px;
   }
   .minesweeper-cell {
-    width: 32px;
-    height: 32px;
-    background: #c0c0c0;
-    border: 2px solid;
-    border-color: #ffffff #808080 #808080 #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 18px;
-    cursor: url('Icons/cursor107.cur'), pointer;
-    user-select: none;
-    font-family: 'Press Start 2P', 'VT323', monospace;
-    line-height: 1;
-    color: #000;
-    text-rendering: optimizeSpeed;
-    -webkit-font-smoothing: none;
-    font-smooth: never;
-  }
-  .minesweeper-cell:active {
-    border-color: #808080 #ffffff #ffffff #808080;
-  }
-  .minesweeper-cell.revealed {
-    border: 1px solid #808080;
-    background: #c0c0c0;
-  }
-  .minesweeper-cell.mine {
-    background: #c0c0c0;
-    font-size: 16px;
-  }
-  .minesweeper-cell.revealed.mine {
-    background: #ff0000;
-  }
-  .minesweeper-cell.flagged {
-    color: transparent;
-  }
-  .minesweeper-flag {
-    width: 24px;
-    height: 24px;
-    image-rendering: pixelated;
-    display: block;
-  }
-  .minesweeper-cell.empty {
-    color: transparent;
-  }
+  width: 32px;
+  height: 32px;
+  background: #c0c0c0;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-right: 3px solid #808080;
+  border-bottom: 3px solid #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: url('Icons/cursor107.cur'), pointer;
+  user-select: none;
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1;
+  color: #000;
+}
+.minesweeper-cell:active:not(.revealed) {
+  border-top: 3px solid #808080;
+  border-left: 3px solid #808080;
+  border-right: 3px solid #ffffff;
+  border-bottom: 3px solid #ffffff;
+}
+.minesweeper-cell.revealed {
+  border: 1px solid #808080;
+  background: #c0c0c0;
+}
+.minesweeper-cell.revealed.mine {
+  background: #ff0000;
+}
+.minesweeper-cell.flagged {
+  color: transparent;
+}
+.minesweeper-flag {
+  width: 20px;
+  height: 20px;
+  image-rendering: pixelated;
+  display: block;
+}
+.minesweeper-cell.empty {
+  color: transparent;
+}
 
   /* Windows */
   .win-window {
@@ -485,6 +487,7 @@
     position: fixed !important;
   }
   #win-minesweeper {
+    min-width: 0;
     resize: none;
   }
   .win-window.visible { display: flex; }
@@ -561,6 +564,10 @@
     border-bottom: 2px solid var(--win-white);
     font-family: 'MS Sans Serif', Tahoma, monospace;
     font-size: 15px;
+  }
+
+  .win-content.paint-content {
+    padding: 0;
   }
 
   .win-statusbar {
@@ -1055,37 +1062,37 @@
       <div class="skills-section-label">Technical Skills</div>
 
       <div class="skill-row">
-        <div class="skill-name-cell">📄 Java</div>
+        <div class="skill-name-cell">Java</div>
         <div><span class="level-badge">Comfortable</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 Python</div>
+        <div class="skill-name-cell">Python</div>
         <div><span class="level-badge">Comfortable</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 SQL / MySQL</div>
+        <div class="skill-name-cell">SQL / MySQL</div>
         <div><span class="level-badge">Comfortable</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 Laravel / PHP</div>
+        <div class="skill-name-cell">Laravel / PHP</div>
         <div><span class="level-badge">Comfortable</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 UML / BPMN</div>
+        <div class="skill-name-cell">UML / BPMN</div>
         <div><span class="level-badge">Familiar</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 Business Analysis</div>
+        <div class="skill-name-cell">Business Analysis</div>
         <div><span class="level-badge">Familiar</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">📄 Networking / Systems</div>
+        <div class="skill-name-cell">Networking / Systems</div>
         <div><span class="level-badge">Familiar</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div></div>
       </div>
@@ -1093,27 +1100,27 @@
       <div class="skills-section-label" style="margin-top:4px;">Languages</div>
 
       <div class="skill-row">
-        <div class="skill-name-cell">🌍 French</div>
+        <div class="skill-name-cell">French</div>
         <div><span class="level-badge">Native</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">🌍 Portuguese</div>
+        <div class="skill-name-cell">Portuguese</div>
         <div><span class="level-badge">Native</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">🌍 English</div>
+        <div class="skill-name-cell">English</div>
         <div><span class="level-badge">Fluent</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">🌍 Italian</div>
+        <div class="skill-name-cell">Italian</div>
         <div><span class="level-badge">Notions</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div></div>
       </div>
       <div class="skill-row">
-        <div class="skill-name-cell">🌍 German</div>
+        <div class="skill-name-cell">German</div>
         <div><span class="level-badge">Beginner</span></div>
         <div class="skill-dots"><div class="skill-dot"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div><div class="skill-dot empty"></div></div>
       </div>
@@ -1151,6 +1158,12 @@
         <a class="project-link" href="https://github.com/Zecomodore/projetsurmandat_groupe07_backend" target="_blank" rel="noopener noreferrer" style="margin-left:6px;"><img class="project-link-icon" src="Icons/github.png" alt="">GitHub (Backend)</a>
         <a class="project-link" href="https://github.com/Zecomodore/projetsurmandat_groupe07" target="_blank" rel="noopener noreferrer" style="margin-left:6px;"><img class="project-link-icon" src="Icons/github.png" alt="">GitHub (App Frontend)</a>
       </div>
+      <div class="project-card">
+        <h3>BrunoOS 98 - Interactive Portfolio Website</h3>
+        <p style="font-size:13px;margin-top:4px;">Developed a distinctive portfolio website built entirely with HTML, CSS, and JavaScript to demonstrate frontend engineering skills without relying on frameworks or libraries. The interface replicates a Windows 98 desktop with draggable windows and desktop icons, a Start menu, and a live taskbar. Technical highlights include a Minesweeper game engine with flood-fill algorithm, a Canvas API drawing tool, and custom Google Analytics event tracking per window interaction.</p>
+        <div class="tags"><span class="tag">2026</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Canvas API</span><span class="tag">UI/UX Design</span><span class="tag">Google Analytics</span><span class="tag">Game Logic</span></div>
+        <a class="project-link" href="https://github.com/BrunoBrancoGarcia/PortfolioWebsite" target="_blank" rel="noopener noreferrer" style="margin-left:6px;"><img class="project-link-icon" src="Icons/github.png" alt="">GitHub</a>
+      </div>
     </div>
   </div>
   <div class="win-statusbar"><span>3 objects</span><span>Last modified: 2026</span></div>
@@ -1160,7 +1173,7 @@
 <div class="win-window" id="win-experience" style="width:620px;height:500px;top:90px;left:200px;">
   <div class="win-titlebar" onmousedown="startDrag(event,'win-experience')">
     <img class="win-titlebar-icon" src="Icons/network_cool_two_pcs-0.png" alt="Experience icon">
-    <span class="win-title-text">Experience — Resume.doc</span>
+    <span class="win-title-text">Experience</span>
     <div class="win-btn" onclick="minimizeWindow('win-experience')">_</div>
     <div class="win-btn">□</div>
     <div class="win-btn" onclick="closeWindow('win-experience','experience')">✕</div>
@@ -1183,7 +1196,7 @@
       </div>
     </div>
   </div>
-  <div class="win-statusbar"><span>Ready</span><span>Resume.doc</span></div>
+  <div class="win-statusbar"><span>Ready</span></div>
 </div>
 
 <!-- Education Window -->
@@ -1275,15 +1288,12 @@
 
 <!-- Paint Window -->
 <div class="win-window" id="win-paint" style="position:fixed;width:700px;height:540px;top:110px;left:230px;">
-  <div class="win-titlebar">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-paint')">
     <img class="win-titlebar-icon" src="Icons/paint_old-0.png" alt="Paint icon">
     <span class="win-title-text">untitled - Paint</span>
     <div class="win-btn" onclick="minimizeWindow('win-paint')">_</div>
     <div class="win-btn">□</div>
     <div class="win-btn" onclick="closeWindow('win-paint','paint')">✕</div>
-  </div>
-  <div class="win-menubar">
-    <span>File</span><span>Edit</span><span>View</span><span>Image</span><span>Colors</span><span>Help</span>
   </div>
   <div class="win-content paint-content">
     <div class="paint-app">
@@ -1294,6 +1304,8 @@
           <div class="paint-tool-btn" onclick="setPaintTool('line', this)" title="Line">／</div>
           <div class="paint-tool-btn" onclick="setPaintTool('rect', this)" title="Rectangle">▭</div>
           <div class="paint-tool-btn" onclick="setPaintTool('eraser', this)" title="Eraser">⌫</div>
+          <div class="paint-tool-btn" onclick="setPaintTool('brush', this)" title="Brush">🖌</div>
+          <div class="paint-tool-btn" onclick="setPaintTool('bucket', this)" title="Bucket Fill"><img src="Icons/Bucket.png" style="width: 16px; height: 16px; image-rendering: pixelated;"></div>
           <div class="paint-tool-btn" onclick="clearPaint()" title="Clear">✕</div>
         </div>
         <div class="paint-canvas-wrap">
@@ -1323,11 +1335,11 @@
       </div>
     </div>
   </div>
-  <div class="win-statusbar"><span>For Help, click Help Topics on the Help Menu.</span><span id="paint-pos">0,0</span></div>
+  <div class="win-statusbar"><span id="paint-pos">0,0</span></div>
 </div>
 
 <!-- Minesweeper Window -->
-<div class="win-window" id="win-minesweeper" style="width:420px;height:540px;top:120px;left:340px;">
+<div class="win-window" id="win-minesweeper" style="width:340px;height:470px;top:120px;left:340px;">
   <div class="win-titlebar" onmousedown="startDrag(event,'win-minesweeper')">
     <img class="win-titlebar-icon" src="Icons/minesweeper.png" alt="Minesweeper icon">
     <span class="win-title-text">Minesweeper</span>
@@ -1338,19 +1350,19 @@
   <div class="win-menubar">
     <span>Game</span><span>Help</span>
   </div>
-  <div class="win-content" style="display:flex;justify-content:center;align-items:flex-start;padding:14px;">
-    <div style="background:#c0c0c0;border:2px inset #808080;padding:10px;display:flex;flex-direction:column;align-items:center;gap:10px;">
-      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;border:2px inset #808080;padding:6px 8px;background:#c0c0c0;">
+  <div class="win-content" style="display:flex;justify-content:center;align-items:flex-start;padding:6px;background:#c0c0c0;">
+    <div style="width:100%;height:100%;background:#c0c0c0;padding:6px;display:flex;flex-direction:column;align-items:center;gap:8px;border-top:3px solid #ffffff;border-left:3px solid #ffffff;border-right:3px solid #808080;border-bottom:3px solid #808080;">
+      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#c0c0c0;border-top:3px solid #808080;border-left:3px solid #808080;border-right:3px solid #ffffff;border-bottom:3px solid #ffffff;">
         <div id="mines-counter" class="minesweeper-led">010</div>
         <button onclick="initMinesweeper()" style="width:56px;height:56px;background:#c0c0c0;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;display:flex;align-items:center;justify-content:center;cursor:url('Icons/cursor107.cur'),pointer;padding:0;">
           <img id="minesweeper-face" class="mine-face" src="Icons/minesweeperReset.png" alt="Minesweeper face">
         </button>
         <div id="time-counter" class="minesweeper-led">000</div>
       </div>
-      <div id="minesweeper-grid" style="display:grid;grid-template-columns:repeat(9,32px);grid-template-rows:repeat(9,32px);gap:0;border:3px inset #808080;background:#c0c0c0;"></div>
+      <div id="minesweeper-grid" style="display:grid;grid-template-columns:repeat(9,32px);grid-template-rows:repeat(9,32px);gap:0;background:#c0c0c0;border-top:3px solid #808080;border-left:3px solid #808080;border-right:3px solid #ffffff;border-bottom:3px solid #ffffff;"></div>
     </div>
   </div>
-  <div class="win-statusbar"><span id="minesweeper-status">Ready</span></div>
+  <div class="win-statusbar" style="display:none;"><span id="minesweeper-status">Ready</span></div>
 </div>
 
 <!-- Error dialog -->
@@ -1604,9 +1616,17 @@ function initPaint() {
       ctx.beginPath();
       ctx.moveTo(pos.x, pos.y);
     }
+    if (paintState.tool === 'brush') {
+      ctx.fillStyle = paintState.color;
+      ctx.fillRect(pos.x - 4, pos.y - 4, 8, 8);
+    }
     if (paintState.tool === 'eraser') {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(pos.x - 5, pos.y - 5, 10, 10);
+    }
+    if (paintState.tool === 'bucket') {
+      ctx.fillStyle = paintState.color;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
   });
 
@@ -1619,6 +1639,10 @@ function initPaint() {
       ctx.strokeStyle = paintState.color;
       ctx.lineTo(pos.x, pos.y);
       ctx.stroke();
+    }
+    if (paintState.tool === 'brush') {
+      ctx.fillStyle = paintState.color;
+      ctx.fillRect(pos.x - 4, pos.y - 4, 8, 8);
     }
     if (paintState.tool === 'eraser') {
       ctx.fillStyle = '#ffffff';
@@ -1655,6 +1679,8 @@ function setPaintTool(tool, el) {
   if (tool === 'line') status.textContent = 'Draw straight lines by dragging.';
   if (tool === 'rect') status.textContent = 'Draw rectangles by dragging.';
   if (tool === 'eraser') status.textContent = 'Erase small areas.';
+  if (tool === 'brush') status.textContent = 'Draw with a thick brush.';
+  if (tool === 'bucket') status.textContent = 'Fill areas with color.';
 }
 
 function setPaintColor(color, el) {
@@ -1982,6 +2008,9 @@ let minesweeper = {
 };
 
 function initMinesweeper() {
+  const previousTimer = minesweeper.timer;
+  clearInterval(previousTimer);
+
   minesweeper = {
     grid: [],
     revealed: [],
@@ -2038,7 +2067,6 @@ function initMinesweeper() {
   document.getElementById('minesweeper-status').textContent = 'Game in progress';
   setMinesweeperFace('reset');
   minesweeper.time = 0;
-  clearInterval(minesweeper.timer);
   minesweeper.timer = setInterval(() => {
     minesweeper.time++;
     if (minesweeper.time <= 999) document.getElementById('time-counter').textContent = String(minesweeper.time).padStart(3, '0');
