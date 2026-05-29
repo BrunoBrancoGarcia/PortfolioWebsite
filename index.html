@@ -1313,7 +1313,7 @@
 </div>
 
 <!-- Contact Window -->
-<div class="win-window" id="win-contact" style="width:540px;height:440px;top:110px;left:240px;">
+<div class="win-window" id="win-contact" style="width:540px;height:490px;top:110px;left:240px;">
   <div class="win-titlebar" onmousedown="startDrag(event,'win-contact')">
     <img class="win-titlebar-icon" src="Icons/envelope_closed-0.png" alt="Contact icon">
     <span class="win-title-text">Contact Me</span>
@@ -1344,7 +1344,7 @@
 
       <div class="connect-row" onclick="window.open('https://www.linkedin.com/in/bruno-branco-778211254/','_blank')">
         <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span><img class="project-link-icon" src="Icons/linkedin.png" alt=""> Establishing connection to LinkedIn...</span>
+          <span><img class="project-link-icon" src="Icons/linkedin.png" alt="" style="width:20px;height:20px;"> Establishing connection to LinkedIn...</span>
           <span id="li-pct">0%</span>
         </div>
         <div class="skill-bar-outer">
@@ -1355,13 +1355,24 @@
 
       <div class="connect-row" onclick="window.open('https://github.com/BrunoBrancoGarcia','_blank')">
         <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span><img class="project-link-icon" src="Icons/github.png" alt=""> Establishing connection to GitHub...</span>
+          <span><img class="project-link-icon" src="Icons/github.png" alt="" style="width:20px;height:20px;"> Establishing connection to GitHub...</span>
           <span id="gh-pct">0%</span>
         </div>
         <div class="skill-bar-outer">
           <div class="skill-bar-fill" id="gh-bar" style="width:0%;transition:width 1.6s ease;"></div>
         </div>
         <div style="font-size:12px;color:#808080;margin-top:2px;" id="gh-status">Initializing...</div>
+      </div>
+
+      <div class="connect-row" onclick="window.open('https://public.tableau.com/app/profile/bruno.branco.garcia/vizzes','_blank')">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span><img class="project-link-icon" src="Icons/tableau.png" alt="" style="width:20px;height:20px;"> Establishing connection to Tableau...</span>
+          <span id="tb-pct">0%</span>
+        </div>
+        <div class="skill-bar-outer">
+          <div class="skill-bar-fill" id="tb-bar" style="width:0%;transition:width 1.5s ease;"></div>
+        </div>
+        <div style="font-size:12px;color:#808080;margin-top:2px;" id="tb-status">Initializing...</div>
       </div>
     </div>
   </div>
@@ -2319,6 +2330,10 @@ function animateConnections() {
     {
       bar: 'gh-bar', pct: 'gh-pct', status: 'gh-status',
       steps: ['Initializing...', 'Pinging server...', 'Loading profile...', 'Connection established ✔']
+    },
+    {
+      bar: 'tb-bar', pct: 'tb-pct', status: 'tb-status',
+      steps: ['Initializing...', 'Connecting to Tableau...', 'Loading dashboards...', 'Connection established ✔']
     }
   ];
 
